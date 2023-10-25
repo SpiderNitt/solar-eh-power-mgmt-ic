@@ -1,0 +1,297 @@
+Project Purpose:
+	Main Purpose:
+		- Reliably power a load from harvested source (done through boost and buck modes, with battery and harvested source combined)
+	Intermediate Purposes:
+		- Maximum power extraction from input (maximum power point selection)
+		- Reduced quiescent power & form factor (asynchronous circuits, low-power consumption of always-on blocks, power-gating, dynamic pulse-width control, zero current switching, discontinuous conduction mode, reuse of circuitry which reduces area hence power - switch matrix)
+		- Output voltage regulation (Incl. Battery charging and battery protection - OV, UV)
+
+
+IC Overview:
+	- I/P O/P:
+		- Vin (i/p) - Input voltage
+		- Vbat (i/p or o/p) - Battery voltage
+		- Vload (o/p) - Voltage to power the load
+		- MPPSEL (i/p) - 4-bit digital input for max. power point selection
+	- Experimental Specifications:
+		- 10nW-1uW power output
+		- 3.2nW quiescent power consumption
+		- i/p power of 500nW - efficiency = 82% (while charging the battery)
+		- In buck mode (Battery discharge), peak efficiency > 87% (and efficiency > 80% for o/p power betn 50nW-1uW)
+		- Input regulation range 0.14V to 0.62V (compatible with low-power solar energy harvesting)
+	- Broad Design Specifications:
+		- Process Node Details:
+			- 180nm low-power process
+			- Control circuits use 1.8V transistors (to red. switching losses)
+			- Power transfer switches use 5V transistors to interface with battery
+		- Discrete Components:
+			- Single external Inductor - 47 uH
+			- External Input Cap (Vin) - ? F
+			- External Load Cap (Vload) - ? F
+		- Power:
+			- Vin (IC input voltage) - 0.5V
+			- Rechargeable Lithium Battery
+			- Vbat (Battery Voltage) (charging voltage, peak discharge voltage) - 3V
+			- Vload (Load voltage) - 1V
+			- All control circuits powered by Vload (1V)
+			- Drivers of switches powered by Vbat
+			- Startup circuits powered by Vin
+		- Strategies for Low Area, Low Q-Power Design:
+			- Always ON circuits in deep subthreshold
+			- Power gating of some power-consuming blocks, when not in use
+			- DC-DC converter operates in DCM
+			- Asynchronous control circuits (low quiescent current, switching losses)
+			- Control circuits scale the switching frequency of converter with I/P power level
+
+
+Block-level Design Specifications:
+
+	- Startup Circuit:
+		- I/P O/P:
+			- NRST (i/p) - NRST=0 -> startup, NRST=1 -> not startup
+
+	- Switch Matrix:
+		- I/P O/P:
+			- Vin (i/p) - Input voltage
+			- Vbat (i/p or o/p) - Battery voltage
+			- Vload (o/p) - Voltage to power the load
+		Functions:
+			- Time-sharing of inductor between multiple converters, simultaneously
+			- <Insert more functions>
+		- Modes:
+			- (Startup)
+			- Boost1 - Vin to Vload
+			- Boost2 - Vin to Vbat
+			- Buck - Vbat to Vload
+		- FET & Diode Switches (Figs. 2, 3):
+			- For DC-DC Conversion:
+				- Mn1, Mn2 - for Boost1 conversion
+				- Mn1, Mp1 - for Boost2 conversion
+				- Mp1, Mn1 (reverse order of Boost2) - for Buck conversion
+			- For Matrix Reconfig.
+				- Mn3 - buck mode, conducts Vbat to Vload
+				- Mn4 - boost mode, conducts Vin to Vload/Vbat
+				- Mn5 - startup mode, allows power flow from Vin to Vload
+			- Mn6 - in startup ckt.
+			- D1 - startup ckt
+			- Mn3, Mn4 switched on/off only when entering/exiting conversion modes, and not any time in between, to minimize losses
+			- Dead time (Fig. 4) between switch-off of Mn3 and switch-on of Mn4 (and vice-versa) inserted, to avoid shoot-through currents from load to input (basically both trans. are off for a certain period, before one of them turns on)
+	
+	- Auxiliary Circuits
+		- Level Shifters
+		- Switch Drivers
+
+	- Configuration block (Fig. 5):
+		- I/P O/P:
+			- Vin (i/p) - Input voltage
+			- Vbat (i/p) - Battery voltage
+			- Vload (i/p) - Voltage to power the load
+			- MPPSEL (i/p) - 4-bit digital input for max. power point selection
+			- En1 (o/p) - Enable signal, to enable pulse generation block
+			- BOOST1 (o/p) - enable BOOST1 mode
+			- BOOST2 (o/p) - enable BOOST2 mode
+			- BUCK (o/p) - enable BUCK mode
+			- Vref (o/p) - on-chip reference voltage, 0.5V
+			- NRST (o/p) - NRST=0 -> startup, NRST=1 -> not startup
+		- Functions:
+			- To signal to pulse gen. block that a power transfer is needed, by setting En1 high
+			- To set pulse width of control signals of switches for high efficiency and zero-current switching
+			- Monitor voltage accross i/p o/p ports
+			- Keeps battery voltage > UV (at discharge) and < OV (at charge), by comparing divided Vbat to 0.5V reference
+			- Regulates Vload to 1V by comparing divided Vload to Vref
+			- Regulates I/P to desired Vmp set by MPP set by external contl. sigls.
+		- Design:
+			- Powered by Vload
+			- Always ON (for monitoring voltages and actuating continuously), hence deep sub-threshold operation
+			- NRST turns high when Vload exceeds 1V
+		- Sub-Blocks:
+			- Current Reference:
+				- Supply-independent
+				- Consumes around 210pA from 1V supply
+			- Voltage Reference (Fig. 7):
+				- Circuit consumes ~3.5pA in simulation
+				- All transistors in deep subthreshold
+				- Mn1 in subthreshold, with Vds>4Vt
+				- Mp1, Mp2 - current mirror transistors
+				- Mn2, Mn3, Mn4 (equally sized) - Vref stack
+				- (W/L)mn1 = X*(W/L)mn2, and (W/L)mp2 = Y*(W/L)mp1
+				- Bulk of Mn3 & Mn4 tied to ground due to layout constraints, & this introduces body effect (Eq. 7 gives Vref)
+				- X=11, Y=2 for Vref=0.5V
+				- Vref=0.5V regardless of Vin
+			- Continuous-time comparators
+				- Comparator Architecture:
+					- Differential amplifier stage
+					- Common source stage
+				- Common Design Aspects:
+					- Comparator delay determines max. effective switching frequency (i.e., max possible harvested power)
+					- Comparators consume 80 pA (to optimize above tradeoff)
+				- Vmpp Comparator
+				- Vbat OV Comparator
+				- Vbat UV Comparator
+				- Vload Upper Threshold Comparator
+				- Vload Lower Threshold Comparator
+			- Voltage dividers:
+				- Implemented with PMOS series stack (in subthreshold)
+				- Divider consumes less than 10 pA				
+				- Sub-blocks:
+					- Vbat Divider
+					- Vload Divider
+			- Vmpp DAC (Fig. 6):
+				- Voltage ref for regulating the input (Vmpp), ranges from 0.14V to 0.62V
+				- Vmpp generated through integrated programmable divider
+				- Integrated divider is made of PMOS series stack
+				- Each point of the stack is tapped out and given to MUX
+				- MUX o/p is selected by MPPSEL (through a decoder)
+				- MUX o/p is Vmpp
+				- Sub-blocks:
+					- Voltage divider
+					- MUX
+					- Decoder
+			- Config. Logic:
+				- <info not given in paper>
+
+	- Pulse generation block (Fig. 5, Fig. 8, Fig. 9, Fig. 10):
+		- I/P O/P:
+			- MPPSEL (i/p) - 4-bit digital input for max. power point selection
+			- En1 (i/p) - Enable signal, to enable pulse generation block
+			- BOOST1 (i/p) - enable BOOST1 mode
+			- BOOST2 (i/p) - enable BOOST2 mode
+			- BUCK (i/p) - enable BUCK mode
+			- Vref (i/p) - on-chip reference voltage, to monitor Icharge capacitor voltage
+			- Phi1 (o/p) - enables switch for charging cycle of inductor
+			- Phi2 (o/p) - enables switch for discharging cycle of inductor
+		- Functions:
+			- Entire purpose is to maintain appropriate tphi1 and tphi2, and delays between them <check if oscillatory behaviour is also part of this - depends whether config. block generates repeated triggers or PGB generates triggers constantly>
+			- Outputs are fed into level shifters and drivers of switches selected by Config. block (Fig. 1)
+			- Actuation of switches
+			- Vary tphi1 inversely as Vin, so that peak current through inductor remains constant, and same output voltage is produced
+		- Design
+			- Powered by Vload
+			- When enabled through En1, Phi1 & Phi2 are generated
+			- Phi2 is triggered by neg-edge of Phi1 immediately, but Phi1 is triggered by neg-edge of Phi2, with a delay (at a time after Phi2 phase, both Phi1 and Phi2 are off). Delay td allows o/p of low-speed comparators in config. block to settle. The delay does not cause inductor spiking, since Phi2 was turned off at zero-current through inductor (Fig. 4)
+			- Pulse width of Phi1 & Phi2 dynamically varied, to accomodate various input voltages (Vin 0.14V to 0.62V gives tphi1 from 6 to 1.5 us)
+			- All continuous-time comparators power-gated during dead-time after phi1 and phi2 phase (which is before the next phi1 phase), till control circuits mandate charge transfer again between input and output
+			
+		- Sub-Blocks:
+			- Phi1 generation for Boost1, Boost2, Buck (Fig. 8)
+				- I/P O/P:
+					- En2 (i/p) - Enable charging cycle of inductor (aka Phi1)
+				- Design:
+					- tphi1 is the time to charge cap. C1 to Vref (0.5V)
+					- current to charge C1 is given by thermom.-coded current mode DAC, to vary tphi1 based on input voltage
+					- tphi1 maintained inversely prop. to Vin (or, Icharge is proportional to Vin, through MPPSEL) (Eq. 8)
+					- <Potential complication trying to accomodate Buck - MPPSEL would have to be muxed with another signal (which is activated during BUCK which maintains proportionality from Vbat to Icharge instead of Vin to Icharge). Otherwise diff. Phi1 generation ckt needed for Buck>
+				- Sub-Blocks:
+					- Binary to thermometer decoder
+					- Current mirror ckt
+					- Thermometer coded current mode DAC
+			- Phi2 generation for Boost1 (Fig. 9)
+				- Design:
+					- Zero current switching is done (Eq. 9) using capacitive DAC, tuned to adjust for Vin/(1-Vin)
+				- Sub-Blocks:
+					- Same as Phi1
+					- Capacitive DAC
+			- Phi2 generation for Boost2 (Fig. 10)
+				- Design:
+					- ZCS - Both i/p and o/p voltages can vary (tphi2 is dependent on tphi1, which is dependent on Vin. tphi2 is also dependent on Vbat. Both vary with time. So ZCS is done through a different method)
+					- ZCS is done by iteratively tuning tphi2. Basically the resultant circuit tries to find the cross-over point of current from positive to negative. Monitors the polarity across switch Mp1 (between inductor and battery). For positive current, the voltage across Mp1 is positive, for negative current it's negative. Using voltage comparator, tphi2 is incremented for positive current/voltage and decremented for negative current/voltage, every phi2 cycle. Eventually it will converge to two consecutive values and keep oscillating back and forth between those two tphi2 values.
+					- Shift register increments/decrements every tphi2 cycle, whose output feeds into tunable delay input, which generates output pulse for switch driver of Mp1
+				- Sub-Blocks:
+					- Dynamic Comparator
+						- Implemented with 5V transistors
+						- Powered by battery
+						- Compares voltage across -ve terminal of inductor and battery
+						- Clocked by phi2, after passing through level shifter
+					- Level Shifter
+					- Tunable Delay
+						- 5 ns unit delay
+					- Shift Register
+						- 30-bit shift register
+					- Pulse Generator
+			- Phi2 generation for Buck
+				- Same as phi2 for Boost1, but with diff. tuning for capacitive DAC
+				- Capacitive DAC is set once <harcdoded?> based on minimum Vbat, which is UV of battery
+			- Switch Matrix actuator/decoder (and routing of Phi1/Phi2 to appropriate switches)
+
+
+Our Design:
+	- Model the input as 0.5V voltage source with high Rth (model appropriately for 10nW to 1 uW o/p power)
+	
+	- Regions of Operation:
+		- Vload < 1V:
+			- Vin < 0.14V and Vbat <= UV:
+				- Do nothing
+			- Vin < 0.14V and Vbat > UV:
+				- Buck
+			- Vin >= 0.14V and UV < Vbat < OV:
+				- Boost1, Boost2
+			- Vin > 0.14V and OV <= Vbat:
+				- Boost1
+		- Vload << 1V and Vin > 0.14V:
+			- Startup
+
+	- To do:
+		- Check the Phi2 generation for Boost2, reference (i.e. with tunable delay, etc.) for better understanding
+		- Read startup circuit working, figure out how Vin is regulated
+		- Timeline:
+			- Need to make proper timeline
+			- Juniors must understand the circuit working
+			- Juniors must be familiar with Virtuoso
+
+
+Doubts:
+	- Switch Matrix: Why MN2 and MP1 for Boost1 and Boost2 respectively? Why NMOS overdrive voltage is considered? (Pg. 3)
+	- Switch Matrix: Does the converter simultaneously power the load and charge the battery? (i.e, simultaneously Boost1 and Boost2?) Why exactly is DCM used? Is it to support this simultaneous operation or due to efficiency?
+	- General: Where is the voltage regulation happening? Especially Vin
+	- General: What happens after battery reaches UV or OV?
+	- PGB: It's given that delay is there between neg-edge of phi2 and pos-edge of phi1, to settle o/p of comparators (Fig. 4 & pg. 7). But won't the inductor build a high voltage due to high resistance (all switches off) at that moment of dead-time? Nope, because of zero-current switching, Phi2 turned off at zero current through inductor
+	- PGB: Should there be a time delay while switching from Phi1 to Phi2 to avoid scenario where both switches off and inductor spiking (basically Phi1 being on for some time after Phi2 is turned on)? On page 7 it's given there's 1.8ns delay to avoid shoot-through currents
+	- PGB: How is tphi1 adjusted based on the configuration of the converter and the input voltage to reduce the overall losses of the system (Pg. 8)?
+	- CB/PGB: Looks like for every single charge transfer (one cycle of phi1 and phi2 combined), the CB generates a trigger for PGB. In other words, CB is event-driven based on Vbat, Vin, Vload, whose changes drive one single cycle of phi1 followed by phi2. For next phi1 and phi2, again PGB waits for trigger from CB. Especially since it's mentioned that converters time-sharing is done. Check if this assessment is correct (Pg. 9)
+	- PGB:  Why do we need another big circuit for Phi2 generation in Boost2? Why not reuse capacitive DAC
+	- PGB: Why capacitive DAC at all in Boost1 Phi2 generation? Can't it be done by just re-modifying the current through the capacitor, and hence be clubbed with Phi1 generation ckt with minimal circuit overhead?
+	- Why such a complex Boost2 Phi2 generation ckt? Why not have a simple subtractor ckt to subtract Vbat and Vin, and club it into the same ckt?
+	- What is a dynamic comparator? (Pg. 9)
+	- What are switch drivers? Are they D-flip flops?
+
+
+Auxiliary Papers (Referenced in main paper):
+
+	- Intro Pg. 1: Low-power solar energy harvesting voltage range
+		[4] W. Jung, S. Oh, S. Bang, Y. Lee, D. Sylvester, and D. Blaauw, “A 3 nW fully integrated energy harvester based on self-oscillating switched capacitor dc–dc converter,” in IEEE Int. Solid-State Circuits Conf (ISSCC) Dig. Tech. Papers, 2014, pp. 398–399.
+		https://ieeexplore.ieee.org/document/6757486/
+		
+	- Intro Pg. 1: PMIC design
+		[8] D. El-Damak and A. P. Chandrakasan, “Solar energy harvesting system with integrated battery management and startup using single inductor and 3.2 nW quiescent power,” in Proc. IEEE Symp. VLSI Circuits, 2015, pp. 280–281.
+		https://ieeexplore.ieee.org/document/7231290/
+
+	- Intro Pg. 1: Reconfigurable switch matrix saving in area, time-sharing of inductor, single power-converter stage
+		[5] S. Bandyopadhyay and A. P. Chandrakasan, “Platform architecture for solar, thermal and vibration energy combining with MPPT and single inductor,” IEEE J. Solid State Circuits, vol. 47, no. 9, pp. 2199–2215, Sep. 2012.
+		https://ieeexplore.ieee.org/document/6225400/
+
+	- Switch matrix Pg. 3: Switch matrix and single inductor to minimize the system form-factor
+		[5] Above
+		[9] K.W. R. Chew, Z. Sun, H. Tang, and L. Siek, “A 400 nW single-inductor dual-input-tri-output dc–dc buck-boost converter with maximum power point tracking for indoor photovoltaic energy harvesting,” in IEEE Int. Solid-State Circuits Conf. (ISSCC) Dig. Tech. Papers, 2013, pp. 68–69.
+		https://ieeexplore.ieee.org/document/7293118/
+
+	- Config. Block Pg. 5: Supply independent current reference
+		[10] B. Razavi, Design of Analog CMOS Integrated Circuits. New York, NY, USA: McGraw-Hill, 2000.
+		[11] S. Mandal, S. Arfin, and R. Sarpeshkar, “Fast startup CMOS current references,” in Proc. IEEE Int. Symp. Circuits Syst. (ISCAS), 2006, pp. 2845–2848.
+		https://ieeexplore.ieee.org/document/1693217/
+
+	- Config. Block Pg. 5: Voltage reference [12], [13]
+		[12] K. Roy, S. Mukhopadhyay, and H. Meimand, “Leakage current mechanisms and leakage reduction techniques in deep-submicrometer CMOS circuits,” Proc. IEEE, vol. 91, no. 2, pp. 305–327, Feb. 2003.
+		https://ieeexplore.ieee.org/document/1182065/
+		[13] S. Bandyopadhyay, “Energy efficient control for power management circuits operating from nano-watts to watts,” Ph.D. dissertation, Department of Electrical Engineering and Computer Science Massachusetts Inst. Technol., Cambridge, MA, USA, Jun. 2013.
+		https://dspace.mit.edu/handle/1721.1/82341
+
+	- Pulse Gen. Block Pg. 9: Phi2 generation for Boost2
+		[2] Texas Instruments, “Programmable output voltage ultra-low power buck converter with up to 50 mA/200 mA output current,” Texas Instruments, Dallas, TX, USA, TPS62736 Datasheet, Mar. 2013.
+		https://www.ti.com/lit/ds/symlink/tps62736.pdf?ts=1697671910200&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FTPS62736%253Futm_source%253Dgoogle%2526utm_medium%253Dcpc%2526utm_campaign%253Dapp-bms-null-44700045336317365_prodfolderdynamic-cpc-pf-google-wwe_int%2526utm_content%253Dprodfolddynamic%2526ds_k%253DDYNAMIC%2BSEARCH%2BADS%2526DCM%253Dyes%2526gclid%253DEAIaIQobChMI9f7f0OCAggMV0GOLCh0vxQw0EAAYASAAEgIlf_D_BwE%2526gclsrc%253Daw.ds
+		
+		https://www.ti.com/product/TPS62736
+
+
+More Resources:
+PMIC NPTEL Playlist: https://www.youtube.com/playlist?list=PLyqSpQzTE6M9UpgVUKY3QKnVVlcqFrMM1
+Razavi Book Chapter Bandgap Reference, for Current Reference Circuit
