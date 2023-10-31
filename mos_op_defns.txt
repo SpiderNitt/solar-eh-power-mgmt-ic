@@ -1,0 +1,95 @@
+1 beff (A/V2) Gain factor in saturation .
+2 betaeff (A/V2) Effective beta.
+3 cbb (F) dQb_dVb.
+4 cbd (F) dQb_dVd (alias=lx22).
+5 cbdbi (F) Intrinsic bulk-to-drain capacitance.
+6 cbg (F) dQb_dVg (alias=lx21).
+7 cbs (F) dQb_dVs (alias=lx23).
+8 cbsbi (F) Intrinsic bulk-to-source capacitance.
+9 cdb (F) dQd_dVb.
+10 cdd (F) Total drain capacitance (including intrinsic, overlap and fringing components, and junction capacitance) (alias=lx33).
+11 cddbi (F) Intrinsic drain capacitance.
+12 cdg (F) dQd_dVg (alias=lx32).
+13 cds (F) dQd_dVs (alias=lx34).
+14 cgb (F) dQg_dVbk.
+15 cgbovl (F) Gate-bulk overlap capacitance (alias=lv38).
+16 cgd (F) dQg_dVd (alias=lx19).
+17 cgdbi (F) Intrinsic gate-to-drain capacitance.
+18 cgdovl (F) Gate-drain overlap and fringing capacitance (alias=lv37).
+19 cgg (F) dQg_dVg (alias=lx18).
+20 cggbi (F) Intrinsic gate capacitance.
+21 cgs (F) dQg_dVs (alias=lx20).
+22 cgsbi (F) Intrinsic gate-to-source capacitance.
+23 cgsovl (F) Gate-source overlap and fringing capacitance (alias=lv36).
+24 cjd (F) Drain-bulk junction capacitance (alias=lx29).
+25 cjs (F) Source-bulk junction capacitance (alias=lx28).
+26 csb (F) dQs_dVb.
+27 csd (F) dQs_dVd.
+28 csg (F) dQs_dVg.
+29 css (F) dQs_dVs.
+30 cssbi (F) Intrinsic source capacitance.
+31 fug (Hz) Unity current gain frequency at actual bias .
+32 gbd (S) Conductance of the drain diode (alias=lx10).
+33 gbs (S) Conductance of the source diode (alias=lx11).
+34 gds (S) Common-source output conductance (alias=lx8).
+35 gm (S) Common-source transconductance (alias=lx7).
+36 gmb (S) DC bulk transconductance .
+37 gmbs (S) Body-transconductance (alias=lx9).
+38 gmoverid (1/V) Gm/Ids.
+39 i1 (A) Alias for id.
+40 i3 (A) Alias of Resistive source current.
+41 i4 (A) Alias of Resistive bulk current.
+42 ibd (A) Drain-bulk diode current (alias=lx6).
+43 ibe (A) Total DC bulk current .
+44 ibs (A) Source-bulk diode current (alias=lx5).
+45 ibulk (A) Resistive bulk current (alias=i4).
+46 id (A) Resistive drain current (alias=i1).
+47 idb (A) DC drain-bulk current .
+48 ide (A) Total DC drain current .
+49 ids (A) Resistive drain-to-source current (alias=lx4).
+50 igb (A) Gate-to-bulk tunneling current.
+51 igcd (A) Gate-to-channel (drain side) tunneling current.
+52 igcs (A) Gate-to-channel (source side) tunneling current.
+53 igd (A) Gate-to-drain leakage current.
+54 ige (A) Total DC gate current .
+55 igidl (A) Gate-induced drain leakage current.
+56 igisl (A) Gate-induced source leakage current.
+57 igs (A) Gate-to-source leakage current.
+58 is (A) Resistive source current (alias=i3).
+59 isb (A) DC source-bulk current .
+60 ise (A) Total DC source current .
+61 isub (A) substrate current (alias=lx50).
+62 pwr (W) Power at op point.
+63 qb (Coul) total bulk charge (alias=lx12).
+64 qbd (Coul) Drain-bulk charge (alias=lx24).
+65 qbi (Coul) Intrinsic Bulk charge.
+66 qbs (Coul) Source-bulk charge (alias=lx26).
+67 qd (Coul) Total drain charge (alias=lx16).
+68 qdi (Coul) Intrinsic Drain charge.
+69 qg (Coul) Total gate charge (alias=lx14).
+70 qgi (Coul) Intrinsic Gate charge.
+71 qinv (Coul) inversion charge.
+72 qsi (Coul) Intrinsic Source charge.
+73 qsrco (Coul) Total Source charge (Charge Conservation: QS=-(QG+QD+QB)).
+74 region=triode Estimated operating region. Spectre outputs number (0-4) in a rawfile. Possible values are off, triode, sat, subth, and breakdown.
+75 reversed Reverse mode indicator. Possible values are no and yes.
+76 ron (Ω) On-resistance.
+77 rout (Ω) AC output resistor .
+78 self_gain Transistor self gain .
+79 type=n Transistor type. Possible values are n and p.
+80 ueff ueff.
+81 vbs (V) Bulk-source voltage.
+82 vdb (V) Drain-bulk voltage.
+83 vds (V) Drain-source voltage (alias=lx3).
+84 vdsat (V) Drain-source saturation voltage (alias=lv10).
+85 vdss (V) Drain saturation voltage at actual bias .
+86 vearly (V) Equivalent early voltage .
+87 vfbeff (V) Vfb effective (alias=lv26).
+88 vgb (V) gate-bulk voltage.
+89 vgd (V) Gate-Drain voltage.
+90 vgs (V) Gate-source voltage.
+91 vgsteff (V) effective vgs.
+92 vgt (V) Effective gate drive voltage including back bias drain bias effects.
+93 vsat_marg (V) Vds margin .
+94 vsb (V) Source-Bulk DC voltage .
+95 vth (V) Threshold voltage (alias=lv9).

@@ -1,0 +1,33 @@
+MOS Typical Design Parameters (Derived from DC Simulations)
+
+Components Tested:
+1. gpdk090_nmos_1v
+2. gpdk090_pmos_1v
+
+Measurement Range:
+1. Width and length sweeps were done from 100nm to 5um, with Vgs=500mV and Vds=100mV (with appropriate sign)
+2. Voltage sweeps for Vds and Vgs were from 0 to 1V (with a -ve sign for pmos), with W,L=5um
+
+Graph Observations:
+1. For width and length sweep, it was observed that for higher width and length (>1um or >5um) all parameters seemed to converge towards a single value. Below 1um, there was lot of variation.
+2. Vgs and Vds sweep:
+    2.1 Vdsat varies a whole lot with Vgs, but not with Vds (so determine that during your design)
+    2.2 unCox and upCox also vary quite a bit with Vgs, but not with Vds (might be better to determine during your design too)
+    2.3 Vearly varies with both Vgs and Vds, but is within the same order of magnitude in saturation region. Since it is fairly large, its inverse (lambda) is small, thus lambda's variation need not be worried about
+    2.4 Vth varies very little with both Vgs and Vds (variation is even less at higher Vds)
+    2.5 Despite Vdsat variation, plugging in Vdsat=0.45V for nmos and Vdsat=0.4V for pmos, the error betn predicted Ids and actual Ids was most optimal, with a max. of 10% (nmos) and 20% (pmos) error in saturation, and 19% (nmos) and 26% (pmos) in linear/triode region. For predicted Ids, the unified current equation (a spice level-1 equation) was used, that accounts for triode region, saturation region, CLM, and velocity saturation.
+
+NMOS Params:
+1. W, L >= 5um (highly recommended). W, L >= 1um if low size is really needed
+2. unCox ~ 280u +- 27u
+3. lambda ~ 19m +- 5m
+4. Vth ~ 170.7832mV +- 0.002mV
+5. Vdsat = 0.45V (this value gives least error for unified current equation)
+
+PMOS Params (Take -ve sign for all params):
+1. W, L >= 5u (highly recommended). W, L >= 1u if low size is really needed
+2. upCox ~ 146.942u +- 19.4u
+3. lambda ~ 16.946m +- 6m
+4. Vth ~ 140.5086mV +- 0.002mV
+5. Vdsat = 0.4V (this value gives least error for unified current equation)
+
