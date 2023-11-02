@@ -1,0 +1,19 @@
+EVcdFile ""
+EVcdInfoFile ""
+VcdFile ""
+VcdInfoFile ""
+VectorFile nil
+allDefinitionFiles ((t "/home/work/solar_eh_pmic/adel_config/defn_files/mos_params/nmos_1v_dc_op/save_NM0_op.scs"))
+allDspfFiles nil
+allIncludedPaths nil
+allPspiceFiles nil
+allSpefFiles nil
+allStimulusFiles nil
+allVectorFiles nil
+definitionFiles ("/home/work/solar_eh_pmic/adel_config/defn_files/mos_params/nmos_1v_dc_op/save_NM0_op.scs")
+dspfFile nil
+hlcheck "off"
+includePath ""
+pspiceFile nil
+spefFile nil
+stimulusFile nil

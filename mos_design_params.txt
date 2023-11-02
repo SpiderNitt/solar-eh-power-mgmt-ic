@@ -16,18 +16,27 @@ Graph Observations:
     2.3 Vearly varies with both Vgs and Vds, but is within the same order of magnitude in saturation region. Since it is fairly large, its inverse (lambda) is small, thus lambda's variation need not be worried about
     2.4 Vth varies very little with both Vgs and Vds (variation is even less at higher Vds)
     2.5 Despite Vdsat variation, plugging in Vdsat=0.45V for nmos and Vdsat=0.4V for pmos, the error betn predicted Ids and actual Ids was most optimal, with a max. of 10% (nmos) and 20% (pmos) error in saturation, and 19% (nmos) and 26% (pmos) in linear/triode region. For predicted Ids, the unified current equation (a spice level-1 equation) was used, that accounts for triode region, saturation region, CLM, and velocity saturation.
+    2.6 For body effect, the Vth vs Vsb graph was mostly linear. unCox and upCox did not vary much with Vsb. Other parameters were not characterized wrt Vsb, and the analysis was primarily for threshold voltage.
 
 NMOS Params:
 1. W, L >= 5um (highly recommended). W, L >= 1um if low size is really needed
 2. unCox ~ 280u +- 27u
 3. lambda ~ 19m +- 5m
-4. Vth ~ 170.7832mV +- 0.002mV
+4. Vth0 ~ 170.7832mV +- 0.002mV
 5. Vdsat = 0.45V (this value gives least error for unified current equation)
+6. gamma1 = -0.05466V, gamma2 = 0.0331, for -1V<=Vsb<-0.8V
+gamma1 = -0.01627V, gamma2 = 0.0811, for -0.8V<=Vsb<-0.4V
+gamma1 = 0V, gamma2 = 0.1221, for -0.4V<=Vsb<=1V
+(Assuming body effect equation, Vth = Vth0 + gamma1 + gamma2*Vsb)
 
-PMOS Params (Take -ve sign for all params):
+PMOS Params:
 1. W, L >= 5u (highly recommended). W, L >= 1u if low size is really needed
-2. upCox ~ 146.942u +- 19.4u
-3. lambda ~ 16.946m +- 6m
-4. Vth ~ 140.5086mV +- 0.002mV
-5. Vdsat = 0.4V (this value gives least error for unified current equation)
+2. upCox ~ -146.942u +- 19.4u
+3. lambda ~ -16.946m +- 6m
+4. Vth0 ~ -140.5086mV +- 0.002mV
+5. Vdsat = -0.4V (this value gives least error for unified current equation)
+6. gamma1 = 0V, gamma2 = 0.1155, for -1V<=Vsb<=0.4V
+gamma1 = 0.01694V, gamma2 = 0.0738, for 0.4V<Vsb<=0.8V
+gamma1 = 0.05903V, gamma2 = 0.0212, for 0.8V<Vsb<=1V
+(Assuming body effect equation, Vth = Vth0 + gamma1 + gamma2*Vsb)
 
