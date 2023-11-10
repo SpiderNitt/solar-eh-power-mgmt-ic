@@ -1,0 +1,10 @@
+Design Parameters for the Solar Energy Harvester PMIC
+
+Under Infinite Input Power Assumption:
+	Switch Matrix:
+		- L = 2mH (boost conv. inductor)
+		- Ip = 1mA (peak inductor current)
+		- C = 3uF (load capacitor)
+		- R = 40k (load resistance)
+		- Obtained timing parameters for above design: Least is 2.2us (tphi2), max is 83us (tempty)
+

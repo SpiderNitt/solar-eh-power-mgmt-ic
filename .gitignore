@@ -1,7 +1,7 @@
 *.log
 *.log.cdslck
 *~
-/gpdk090_v4.6/
+/libs/gpdk090_v4.6/
 /.finesimXL_work/
 /.cadence/
 /simulation/
