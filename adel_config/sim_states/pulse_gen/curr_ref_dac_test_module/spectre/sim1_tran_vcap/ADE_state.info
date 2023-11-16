@@ -1,0 +1,3 @@
+projectDir = '"/home/disk/simulation/SIM_IC61"
+designInfo = '("pulse_gen" "curr_ref_dac_test_module" "schematic" "spectre")
+descriptionText = "None"

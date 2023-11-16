@@ -1,0 +1,193 @@
+savedComponent = (let
+(tmp1 tmp2 tmp3 tmp4 tmp5 tmp6 tmp7 tmp8 tmp9 tmp10 tmp11 tmp12 tmp13 tmp14 tmp15 tmp16 tmp17 tmp18 tmp19 tmp20 tmp21)
+(unless tmp1
+tmp1 = make_sevVariableStruct()
+)
+(unless tmp1
+tmp1 = (ncons nil)
+)
+tmp1->name = "vdd"
+tmp1->expression = "1"
+tmp1->index = 1
+(unless tmp2
+tmp2 = make_sevVariableStruct()
+)
+(unless tmp2
+tmp2 = (ncons nil)
+)
+tmp2->name = "cap_chrg_init_v"
+tmp2->expression = "0"
+tmp2->index = 2
+(unless tmp3
+tmp3 = make_sevVariableStruct()
+)
+(unless tmp3
+tmp3 = (ncons nil)
+)
+tmp3->name = "cap_chrg"
+tmp3->expression = "25.24p"
+tmp3->index = 3
+(unless tmp4
+tmp4 = make_sevVariableStruct()
+)
+(unless tmp4
+tmp4 = (ncons nil)
+)
+tmp4->name = "w_by_l_pge"
+tmp4->expression = "10"
+tmp4->index = 4
+(unless tmp5
+tmp5 = make_sevVariableStruct()
+)
+(unless tmp5
+tmp5 = (ncons nil)
+)
+tmp5->name = "pge_len"
+tmp5->expression = "120n"
+tmp5->index = 5
+(unless tmp6
+tmp6 = make_sevVariableStruct()
+)
+(unless tmp6
+tmp6 = (ncons nil)
+)
+tmp6->name = "w_by_l_sw"
+tmp6->expression = "10"
+tmp6->index = 6
+(unless tmp7
+tmp7 = make_sevVariableStruct()
+)
+(unless tmp7
+tmp7 = (ncons nil)
+)
+tmp7->name = "sw_len"
+tmp7->expression = "120n"
+tmp7->index = 7
+(unless tmp8
+tmp8 = make_sevVariableStruct()
+)
+(unless tmp8
+tmp8 = (ncons nil)
+)
+tmp8->name = "v_charge"
+tmp8->expression = "0"
+tmp8->index = 8
+(unless tmp9
+tmp9 = make_sevVariableStruct()
+)
+(unless tmp9
+tmp9 = (ncons nil)
+)
+tmp9->name = "v_purge"
+tmp9->expression = "0"
+tmp9->index = 9
+(unless tmp10
+tmp10 = make_sevVariableStruct()
+)
+(unless tmp10
+tmp10 = (ncons nil)
+)
+tmp10->name = "Cs"
+tmp10->expression = "50f"
+tmp10->index = 10
+(unless tmp11
+tmp11 = make_sevVariableStruct()
+)
+(unless tmp11
+tmp11 = (ncons nil)
+)
+tmp11->name = "w_by_l_cpy"
+tmp11->expression = "6.5"
+tmp11->index = 11
+(unless tmp12
+tmp12 = make_sevVariableStruct()
+)
+(unless tmp12
+tmp12 = (ncons nil)
+)
+tmp12->name = "length_cpy"
+tmp12->expression = "500n"
+tmp12->index = 12
+(unless tmp13
+tmp13 = make_sevVariableStruct()
+)
+(unless tmp13
+tmp13 = (ncons nil)
+)
+tmp13->name = "w_by_l_byp"
+tmp13->expression = "1"
+tmp13->index = 13
+(unless tmp14
+tmp14 = make_sevVariableStruct()
+)
+(unless tmp14
+tmp14 = (ncons nil)
+)
+tmp14->name = "len_byp"
+tmp14->expression = "120n"
+tmp14->index = 14
+(unless tmp15
+tmp15 = make_sevVariableStruct()
+)
+(unless tmp15
+tmp15 = (ncons nil)
+)
+tmp15->name = "w_by_l_p"
+tmp15->expression = "120m"
+tmp15->index = 15
+(unless tmp16
+tmp16 = make_sevVariableStruct()
+)
+(unless tmp16
+tmp16 = (ncons nil)
+)
+tmp16->name = "length_p"
+tmp16->expression = "1u"
+tmp16->index = 16
+(unless tmp17
+tmp17 = make_sevVariableStruct()
+)
+(unless tmp17
+tmp17 = (ncons nil)
+)
+tmp17->name = "Kn"
+tmp17->expression = "0.6"
+tmp17->index = 17
+(unless tmp18
+tmp18 = make_sevVariableStruct()
+)
+(unless tmp18
+tmp18 = (ncons nil)
+)
+tmp18->name = "w_by_l_n"
+tmp18->expression = "1.2"
+tmp18->index = 18
+(unless tmp19
+tmp19 = make_sevVariableStruct()
+)
+(unless tmp19
+tmp19 = (ncons nil)
+)
+tmp19->name = "length_n"
+tmp19->expression = "300n"
+tmp19->index = 19
+(unless tmp20
+tmp20 = make_sevVariableStruct()
+)
+(unless tmp20
+tmp20 = (ncons nil)
+)
+tmp20->name = "res_len"
+tmp20->expression = "1u"
+tmp20->index = 20
+(unless tmp21
+tmp21 = make_sevVariableStruct()
+)
+(unless tmp21
+tmp21 = (ncons nil)
+)
+tmp21->name = "res_wid"
+tmp21->expression = "10u"
+tmp21->index = 21
+list(tmp1 tmp2 tmp3 tmp4 tmp5 tmp6 tmp7 tmp8 tmp9 tmp10 tmp11 tmp12 tmp13 tmp14 tmp15 tmp16 tmp17 tmp18 tmp19 tmp20 tmp21)
+)

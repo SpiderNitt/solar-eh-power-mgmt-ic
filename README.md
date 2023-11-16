@@ -31,5 +31,32 @@ To activate sudo permission:
 
     su root # enter password  
     usermod -aG wheel work # and then edit /etc/sudoers file by removing the comment (# symbol) in front of: # %wheel ALL=(ALL) ALL  
-    su work  
+    exit  
     exit # then log out and log in again, you will be able to invoke sudo
+    
+To change time-zone, date, and time:  
+
+    # Use the following GUI approach to change time settings  
+    system-config-date  
+    
+    # OR, use following cmd-line approach:
+    
+    # Change timezone:
+    ls /usr/share/zoneinfo # Check for /etc/share/zoneinfo/Asia/Kolkata
+    sudo nano /etc/sysconfig/clock # Change contents to ZONE="Asia/Kolkata"
+    tzdata-update
+    sudo ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+    date # To verify timezone, date, and time
+    
+    # Change date, time:
+    sudo date +%D -s YYYY-MM-DD # Replace YYYY-MM-DD with current date
+    sudo date +%T -s HH:MM:SS # Replace HH:MM:SS with current time
+    date # Verify date, time
+
+## Project:  
+
+### References:  
+1. [A 10 nW–1 μW Power Management IC With Integrated Battery Management and Self-Startup for Energy Harvesting Applications]  
+2. 
+[A 10 nW–1 μW Power Management IC With Integrated Battery Management and Self-Startup for Energy Harvesting Applications]: https://ieeexplore.ieee.org/document/7366755
+
